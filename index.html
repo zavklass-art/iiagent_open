@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>ИИ-агенты в здравоохранении — прототип</title>
+<style>
+:root{--ink:#172225;--muted:#6c787b;--line:#dce4e3;--mint:#0e6f67;--mint2:#bfe8df;--mint3:#edf8f5;--peach:#f28d7b;--cream:#f7f6f1;--white:#fff;--shadow:0 12px 30px rgba(25,42,42,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.45}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}.eyebrow{font-size:14px;font-weight:700;letter-spacing:.03em;color:var(--mint);text-transform:uppercase}.section{padding:84px 0}.section.tight{padding:56px 0}h1,h2,h3,p{margin-top:0}h1{font-size:62px;line-height:.98;letter-spacing:-.04em;margin-bottom:22px}h2{font-size:40px;line-height:1.05;letter-spacing:-.03em;margin-bottom:18px}h3{font-size:22px;line-height:1.1;margin-bottom:10px}.lead{font-size:22px;line-height:1.35;color:#334043;max-width:700px}.muted{color:var(--muted)}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(220,228,227,.8)}.topbar .inner{height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:14px;font-weight:700}.brand img{height:34px;width:auto}.nav{display:flex;gap:24px;font-size:14px;color:#425052}.nav a:hover{color:var(--mint)}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:14px;padding:15px 20px;font-weight:700;border:1px solid transparent;transition:.2s}.btn.primary{background:var(--ink);color:#fff}.btn.secondary{background:var(--white);border-color:var(--line)}.btn:hover{transform:translateY(-1px)}
+.hero{background:linear-gradient(135deg,#f3f7f5 0%,#fff 52%,#e8f4f0 100%);padding:54px 0 48px;overflow:hidden}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:24px}.hero-card{position:relative;min-height:520px;border-radius:32px;background:linear-gradient(150deg,#123c3a 0%,#0c2625 100%);overflow:hidden;box-shadow:var(--shadow)}.hero-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 20%,rgba(47,205,179,.28),transparent 38%),radial-gradient(circle at 15% 80%,rgba(242,141,123,.17),transparent 34%)}.hero-img{position:absolute;right:-3%;bottom:-3%;width:96%;filter:drop-shadow(0 20px 40px rgba(0,0,0,.18))}.hero-badge{position:absolute;left:24px;top:24px;color:#fff;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);padding:9px 12px;border-radius:999px;font-size:13px}.meta{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0}.chip{padding:10px 12px;border-radius:12px;background:#fff;border:1px solid var(--line);font-size:14px}.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.about-block{margin-top:42px}.about-block>.eyebrow{margin-bottom:16px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:0}.stat{padding:22px;border-radius:18px;background:#fff;border:1px solid var(--line);text-align:center;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:118px}.stat b{display:block;font-size:26px;margin-bottom:4px}.stat span{font-size:14px;color:var(--muted)}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}.card{border:1px solid var(--line);border-radius:24px;padding:24px;background:#fff;box-shadow:0 4px 14px rgba(30,50,50,.04)}.card.accent{background:linear-gradient(180deg,#eff9f6 0%,#ffffff 100%);color:var(--ink);border:2px solid #77b7aa;box-shadow:0 14px 34px rgba(14,111,103,.12);position:relative;z-index:2}.card.accent .muted{color:var(--muted)}.pill{display:inline-flex;padding:8px 10px;border-radius:999px;background:var(--mint3);color:var(--mint);font-weight:700;font-size:12px;margin-bottom:16px}.accent .pill{background:#dff3ed;color:#0e6f67}.price{font-size:30px;font-weight:800;margin:18px 0 4px}.list{list-style:none;padding:0;margin:18px 0 0}.list li{padding-left:25px;position:relative;margin:10px 0}.list li::before{content:"✓";position:absolute;left:0;top:0;color:var(--mint);font-weight:900}.accent .list li::before{color:var(--mint)}
+.formats-title{font-size:34px;max-width:760px}.team-strip{margin-top:22px;background:linear-gradient(90deg,#edf8f5,#fff4f1);border-radius:22px;padding:22px 24px;display:flex;justify-content:space-between;gap:20px;align-items:center;border:1px solid #e7eeec}.team-strip strong{font-size:20px}
+.learn{background:var(--cream)}.learn-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.learn-item{display:flex;gap:16px;align-items:flex-start;padding:22px;border-radius:20px;background:#fff;border:1px solid #ece9df}.icon{width:42px;height:42px;border-radius:12px;background:var(--mint3);display:grid;place-items:center;color:var(--mint);font-weight:900;flex:0 0 auto}.learn-item p{margin:4px 0 0;color:var(--muted)}
+.tasks{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.task{min-height:112px;border-radius:18px;border:1px solid var(--line);padding:16px 18px;background:linear-gradient(180deg,#fff,#fbfcfc);display:block}.num{display:block;font-size:12px;color:#839091;margin-bottom:9px}.task strong{font-size:17px;line-height:1.22}
+.program{background:#0f2524;color:#fff}.program h2,.program .eyebrow{color:#fff}.day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.day{padding:26px;border-radius:24px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}.day-tag{display:inline-block;font-size:12px;font-weight:800;padding:7px 9px;border-radius:999px;background:#fff;color:#17302f;margin-bottom:16px}.day ul{padding-left:18px;color:#dbe7e5}.day li{margin:8px 0}
+.geo-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:stretch}.geo-panel{border-radius:26px;padding:28px;background:var(--mint3);border:1px solid #d7ebe6}.city-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}.city{padding:9px 12px;background:#fff;border-radius:999px;font-size:14px;border:1px solid #d8e7e3}.map{border-radius:26px;min-height:360px;background:linear-gradient(145deg,#153735,#214e49);position:relative;overflow:hidden}.map:before,.map:after{content:"";position:absolute;border-radius:50%;background:rgba(94,229,203,.18);filter:blur(1px)}.map:before{width:220px;height:220px;right:12%;top:12%}.map:after{width:110px;height:110px;left:12%;bottom:18%}.dot{position:absolute;width:10px;height:10px;background:#fff;border-radius:50%;box-shadow:0 0 0 6px rgba(255,255,255,.12)}.d1{left:20%;top:35%}.d2{left:48%;top:28%}.d3{left:66%;top:48%}.d4{left:80%;top:32%}.d5{left:58%;top:67%}.map-label{position:absolute;left:28px;bottom:26px;color:#fff;max-width:360px}.map-label h3{font-size:28px}.map-label p{color:#d2dfdc}
+.partners{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.partner{padding:26px;border-radius:24px;border:1px solid var(--line);background:#fff;min-height:240px}.partner img{height:54px;width:auto;object-fit:contain;margin-bottom:22px}.partner p{color:var(--muted)}
+.cta{padding:70px 0}.cta-box{border-radius:30px;padding:42px;background:linear-gradient(120deg,#f0f7f5,#fff4f0);display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px}.cta-box h2{margin-bottom:8px}.footer{padding:36px 0;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+
+.hero-logos{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:0 0 24px}.hero-logos img{height:42px;width:auto;max-width:150px;object-fit:contain}.program-cta{text-align:center;margin:20px 0 30px}.program-cta .btn{background:#fff;color:var(--ink);min-width:230px}
+@media(max-width:600px){.hero-logos{gap:14px;margin-bottom:18px}.hero-logos img{height:32px;max-width:115px}.program-cta .btn{width:100%}}
+
+.about-intro{max-width:900px;margin:8px 0 24px;font-size:20px;line-height:1.5;color:var(--ink)}.audience-block{margin-top:26px;padding:22px 26px;border:1px solid #cfe5df;border-radius:22px;background:linear-gradient(100deg,#eaf7f3 0%,#f8fbfa 100%)}.audience-block>.eyebrow{font-size:15px;color:#0e6f67}.audience-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 30px;margin-top:10px}.audience-item{position:relative;padding:8px 0 8px 28px;font-size:16px;line-height:1.3;color:#40585d}.audience-item:before{content:"";position:absolute;left:2px;top:12px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #5e9690}#formats{padding-top:48px}
+.mobile-only{display:none}
+@media(max-width:900px){.nav{display:none}.hero-grid,.geo-grid{grid-template-columns:1fr}.hero-card{min-height:390px;order:-1}.hero-img{width:88%}h1{font-size:48px}.cards3,.day-grid,.partners{grid-template-columns:1fr}.card.accent{transform:none}.tasks{grid-template-columns:1fr 1fr}.cta-box{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.learn-grid{grid-template-columns:1fr}.mobile-only{display:block}.desktop-only{display:none}}
+@media(max-width:600px){.wrap{width:min(100% - 28px,1160px)}.section{padding:58px 0}.section.tight{padding:42px 0}.topbar .inner{height:60px}.brand img{height:29px}.topbar .btn{padding:11px 14px;font-size:13px}.hero{padding:26px 0 38px}.hero-card{min-height:300px;border-radius:24px}.hero-badge{left:16px;top:16px;font-size:11px}.hero-img{width:102%;right:-12%;bottom:-1%}h1{font-size:40px}.lead{font-size:18px}.meta{margin:18px 0}.chip{font-size:13px;padding:8px 10px}.hero-actions{display:grid;grid-template-columns:1fr}.btn{width:100%}.about-block{margin-top:34px}.about-block>.eyebrow{margin-bottom:12px}.stats{margin-top:0}.stat{padding:18px;min-height:104px}.stat b{font-size:23px}.card,.day,.partner{padding:22px;border-radius:20px}.team-strip{display:block}.team-strip .btn{margin-top:14px}.tasks{grid-template-columns:1fr}.task{min-height:120px}.program h2,h2{font-size:27px;line-height:1.08}.day-grid{gap:12px}.map{min-height:290px}.cta-box{padding:26px;border-radius:22px}.cta{padding:44px 0}.footer{text-align:center}.mobile-stack{display:grid;gap:10px}}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-size:13px;font-weight:700;color:#536164}.field input{width:100%;padding:15px 16px;border-radius:14px;border:1px solid var(--line);font:inherit;background:#fff;outline:none}.field input:focus{border-color:#8bbdb3;box-shadow:0 0 0 3px rgba(14,111,103,.08)}.form-note{font-size:12px;color:var(--muted);margin-top:12px}.geo-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.result-feature{display:grid;grid-template-columns:1.4fr .9fr;gap:18px;margin-top:28px}.result-list{display:grid;gap:14px}.result-row{display:flex;gap:14px;align-items:flex-start;padding:20px 22px;border-radius:18px;background:#fff;border:1px solid #ece9df}.result-dot{width:18px;height:18px;border-radius:50%;background:#d8e7e3;border:2px solid #6f9297;flex:0 0 auto;margin-top:3px}.result-row strong{font-size:20px;line-height:1.25}.result-boxes{display:grid;gap:14px}.result-box{border:1.5px solid #6f9297;border-radius:22px;padding:24px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:18px;line-height:1.35;background:#fff}.recommended{display:inline-flex;margin:0 0 12px;padding:7px 10px;border-radius:999px;background:#dff8f2;color:#0e6f67;font-size:12px;font-weight:800}.accent .recommended{background:var(--mint);color:#fff}.download-note{font-size:13px;color:var(--muted);margin-top:10px}.manager-results{border-radius:24px;background:#e6f3ef;border:1px solid #cfe5df;padding:24px}.manager-results h3{font-size:17px;color:var(--mint);margin:0 0 14px;text-transform:uppercase;letter-spacing:.02em}.manager-results .result-box{background:#fff;border-color:#9ab8b3;font-weight:700}.modal{position:fixed;inset:0;background:rgba(10,25,24,.66);z-index:100;display:none;align-items:center;justify-content:center;padding:24px}.modal.open{display:flex}.modal-card{width:min(1040px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:28px;padding:30px;box-shadow:0 30px 80px rgba(0,0,0,.28);position:relative}.modal-close{position:absolute;right:18px;top:18px;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:24px;cursor:pointer}.campus-modal-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:24px;margin-top:24px;align-items:start}.campus-photos{display:grid;gap:12px;position:sticky;top:0}.campus-photo{border-radius:22px;overflow:hidden;background:#eef5f3;box-shadow:0 10px 26px rgba(25,42,42,.10)}.campus-photo img{width:100%;height:220px;object-fit:cover}.campus-photo.small img{height:170px}.campus-photo-caption{padding:12px 14px;font-size:12px;color:var(--muted);background:#fff}.campus-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}.campus-list span{padding:11px 13px;border:1px solid #e3ebe9;border-radius:12px;background:#f8fbfa;font-size:14px;font-weight:600}.modal-note{font-size:12px;color:var(--muted);margin-top:14px}.modal-actions{margin-top:20px}
+@media(max-width:900px){.result-feature{grid-template-columns:1fr}.result-boxes{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.cta-box{grid-template-columns:1fr !important}.campus-modal-grid{grid-template-columns:1fr}.campus-photos{position:static;grid-template-columns:1fr 1fr}.campus-photo img,.campus-photo.small img{height:180px}.card.accent{transform:none}}
+@media(max-width:600px){.about-intro{font-size:17px;line-height:1.45;margin-bottom:18px}.audience-block{margin-top:20px;padding:18px 16px}.audience-grid{grid-template-columns:1fr;gap:2px}.audience-item{font-size:15px;padding-top:7px;padding-bottom:7px}#formats{padding-top:40px}.formats-title{font-size:27px;line-height:1.08}.result-row{padding:18px}.result-row strong{font-size:18px}.result-boxes{grid-template-columns:1fr}.result-box{font-size:17px;padding:20px}.form-grid{gap:12px}.modal{padding:10px}.modal-card{padding:24px 18px;border-radius:22px}.campus-list{grid-template-columns:1fr}.campus-photos{grid-template-columns:1fr}.campus-photo img,.campus-photo.small img{height:190px}}
+
+/* v15 — unified restrained sales visual system */
+:root{--ink:#183033;--muted:#64787b;--line:#d8e5e2;--mint:#087b73;--mint-dark:#075f59;--mint-soft:#edf6f3;--mint-mid:#dceee9;--white:#fff;--shadow:0 10px 28px rgba(20,64,61,.07)}
+body{color:var(--ink);background:#fff}
+.section{padding:76px 0}.section.tight{padding:64px 0}
+.section-main-title{color:var(--ink)!important;text-transform:none!important;letter-spacing:-.025em!important;font-size:38px!important;line-height:1.08!important;font-weight:800!important;margin-bottom:28px!important}
+.eyebrow:not(.section-main-title){color:var(--mint)}
+.btn{border-radius:10px;box-shadow:none}.btn.primary{background:var(--mint)!important;color:#fff!important}.btn.primary:hover{background:var(--mint-dark)!important}
+.btn.secondary{background:#fff;border-color:#aac6c0;color:var(--mint-dark)}
+.hero{background:linear-gradient(135deg,#f4f8f7 0%,#fff 58%,#edf6f3 100%)}
+.hero-card{background:linear-gradient(150deg,#0b7068,#07554f);box-shadow:var(--shadow)}
+.hero-card::before{background:radial-gradient(circle at 70% 20%,rgba(255,255,255,.13),transparent 38%)}
+.chip{border-color:var(--line);border-radius:10px}.stat{border-color:var(--line);border-radius:18px;box-shadow:none}
+.audience-block{background:var(--mint-soft)!important;border-color:#cfe2dd!important;border-radius:20px!important}
+.audience-item:before{border-color:var(--mint)!important}
+#formats{background:#fff;border-top:0!important;padding-top:70px}
+#formats .cards3{align-items:stretch;gap:16px!important}
+#formats .card{border:1px solid var(--line)!important;border-radius:20px!important;padding:26px!important;box-shadow:none!important}
+#formats .card.accent{background:#fff!important;border:2px solid var(--mint)!important;box-shadow:0 10px 30px rgba(8,123,115,.08)!important}
+#formats .pill{background:transparent!important;color:var(--mint)!important;padding:0!important;border-radius:0!important;font-size:13px!important;letter-spacing:.03em!important;text-transform:uppercase!important}
+#formats .team-count{font-size:21px!important;color:var(--ink)!important;margin-bottom:14px!important}
+#formats .card.accent .recommended{top:22px!important;right:22px!important;background:var(--mint)!important;color:#fff!important;border-radius:999px!important;padding:6px 10px!important;font-size:11px!important;box-shadow:none!important}
+#formats .card h3{font-size:22px;margin-top:4px}
+#formats .list{margin-top:20px;padding:0;list-style:none}
+#formats .list li{position:relative;padding:9px 0 9px 25px;border-bottom:1px solid #edf2f1}
+#formats .list li:last-child{border-bottom:0}
+#formats .list li::before{content:'✓';position:absolute;left:0;color:var(--mint);font-weight:800}
+#formats .card.accent .team-special{background:var(--mint-soft);margin:0 -10px;padding:9px 10px 9px 35px;border-bottom:2px solid #fff;color:var(--ink)!important;font-weight:700;border-radius:6px}
+#formats .card.accent .team-special::before{left:10px}
+#formats .card.accent .team-special:nth-of-type(5){margin-bottom:12px}
+#formats .shared-benefit{color:var(--muted)!important;font-size:14px!important}
+#formats .team-strip{margin-top:18px;background:var(--mint-soft)!important;border:1px solid #c8dfda!important;border-radius:18px!important;padding:20px 24px!important}
+#formats .team-strip strong{color:var(--ink)}
+.learn{background:var(--mint-dark)!important;color:#fff!important;padding:76px 0!important}
+.learn .section-main-title{color:#fff!important}
+.learn .result-feature{border:0!important;gap:16px!important;margin-top:0!important}
+.learn .result-list{background:var(--mint-mid)!important;padding:16px!important;border-radius:20px!important}
+.learn .result-row{background:#fff!important;border:0!important;border-radius:12px!important;padding:19px 20px!important}
+.learn .result-row strong{color:var(--ink)!important;font-size:18px!important}
+.learn .result-dot{background:#fff!important;border-color:var(--mint)!important;box-shadow:none!important}
+.learn .manager-results{display:flex;align-items:stretch}
+.learn .result-boxes{width:100%}
+.learn .manager-results .result-box{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.28)!important;color:#fff!important;border-radius:16px!important;font-weight:600}
+section.section.tight:has(.tasks){background:#fff}
+.tasks{gap:12px!important}.task{border:1px solid var(--line)!important;border-radius:16px!important;background:#fff!important;padding:18px!important;box-shadow:none}
+.task-icon{width:36px;height:36px;display:grid!important;place-items:center;background:var(--mint-soft);border-radius:10px;color:var(--mint)!important;font-size:18px!important;margin-bottom:12px!important}
+.task strong{color:var(--ink)!important}
+.program{background:var(--mint-soft)!important;color:var(--ink)!important;border:0!important}
+.program .section-main-title{color:var(--ink)!important}
+.program .day-grid{position:relative;gap:16px!important}
+.program .day{background:#fff!important;color:var(--ink)!important;border:1px solid #c7ddd8!important;border-radius:20px!important;box-shadow:none!important}
+.program .day-tag{background:var(--mint)!important;color:#fff!important;border-radius:999px!important;padding:7px 11px!important}
+.program .day h3{color:var(--ink)}.program .day ul{color:var(--muted)!important}
+.program-cta .btn{background:var(--mint)!important;color:#fff!important;border-radius:10px!important}
+.cta{background:#fff!important;padding:76px 0!important}
+.cta-box{background:var(--mint-dark)!important;color:#fff!important;border-radius:24px!important;border:0!important;box-shadow:none!important}
+.cta-box h2{color:#fff}.cta-box .muted,.cta-box .download-note{color:#d8e9e5!important}.cta-box .field label{color:#e6f1ef}.cta-box .form-note{color:#c7dcda!important}
+.cta-box .field input{border:0;border-radius:10px}.cta-box .btn.primary{background:#fff!important;color:var(--mint-dark)!important}
+/* Developers deliberately follows the conversion form as a quieter trust block */
+#apply + .section.tight{background:#fff;border-top:1px solid #eef3f2;padding-top:58px}
+#apply + .section.tight .partners{gap:14px!important}
+#apply + .section.tight .partner{border:1px solid var(--line)!important;border-radius:16px!important;box-shadow:none!important;background:#fff!important}
+.footer{background:#f5f8f7!important;color:var(--muted)!important;border-top:1px solid var(--line)!important}
+@media(max-width:900px){.section-main-title{font-size:32px!important}.learn .result-feature{grid-template-columns:1fr!important}}
+@media(max-width:600px){.section{padding:54px 0}.section.tight{padding:48px 0}.section-main-title{font-size:28px!important;margin-bottom:20px!important}#formats{padding-top:52px}.cards3{gap:12px!important}#formats .card{padding:22px!important}#formats .card.accent .recommended{position:static!important;margin-bottom:12px!important}.team-strip{display:block}.learn{padding:54px 0!important}.learn .result-list{padding:10px!important}.cta{padding:54px 0!important}}
+
+
+/* v18: balance the SberMedAI mark with the other developer logos */
+.partner-sbermed img{height:38px!important;max-width:150px!important}
+@media(max-width:600px){.partner-sbermed img{height:34px!important;max-width:135px!important}}
+
+/* v19 targeted refinements */
+.download-note{display:inline-flex!important;align-items:center;gap:8px;margin-top:16px!important;padding:9px 13px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(255,255,255,.10);color:#fff!important;font-size:14px!important;font-weight:750;letter-spacing:.01em}
+.download-note::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--mint);font-size:12px;font-weight:900}
+#formats .campus-accent{padding-top:12px!important;padding-bottom:12px!important}
+#formats .campus-accent strong{font-size:18px;color:var(--mint)}
+@media(max-width:600px){.download-note{border-radius:14px;line-height:1.3}}
+
+/* v21 — format cards only */
+#formats .format-featured{background:linear-gradient(180deg,#e4f3ef 0%,#f7fbfa 100%)!important;border:2px solid var(--mint)!important;box-shadow:0 16px 38px rgba(8,123,115,.14)!important;transform:translateY(-8px);}
+#formats .format-featured h3{font-size:25px!important;color:var(--mint-dark)!important;}
+#formats .format-featured .team-count{font-size:24px!important;}
+#formats .format-featured .pill{font-weight:850!important;}
+#formats .format-featured .recommended{background:var(--mint)!important;color:#fff!important;}
+#formats .format-featured .campus-accent{background:#d6ebe5!important;margin:0 -10px!important;padding:11px 10px 11px 35px!important;border-radius:6px!important;}
+#formats .format-featured .campus-accent::before{left:10px!important;}
+#formats .individual-subtitle{font-weight:700;color:var(--ink)!important;}
+@media(max-width:900px){#formats .format-featured{transform:none;}}
+</style>
+<style>
+/* Visual alignment with the current mednet.ru AI-agents landing */
+:root{
+  --ink:#55707b;
+  --muted:#6f838b;
+  --line:#a9bcc1;
+  --mint:#5f808b;
+  --mint2:#dce9ec;
+  --mint3:#eef5f6;
+  --peach:#c89a78;
+  --cream:#ffffff;
+  --white:#ffffff;
+  --shadow:none;
+}
+body{font-family:Montserrat,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#fff}
+.wrap{width:min(1320px,calc(100% - 64px))}
+.topbar{background:rgba(255,255,255,.97);border-bottom:1px solid #e4ebed;backdrop-filter:blur(10px)}
+.topbar .inner{height:72px}.nav{color:#607b85}.nav a:hover{color:#3f6570}
+.btn{border-radius:6px;padding:14px 22px;box-shadow:none;font-weight:700}
+.btn.primary{background:#5e7e88;color:#fff}
+.btn.secondary{background:#fff;border-color:#90aab1;color:#55707b}
+.eyebrow{color:#5d7d87;font-size:15px;font-weight:800;letter-spacing:.02em}
+h1,h2,h3{color:#55707b}
+h1{font-size:58px;line-height:1.02;letter-spacing:-.025em;font-weight:700}
+h2{font-size:38px;line-height:1.12;letter-spacing:-.015em;font-weight:600}
+h3{font-size:22px;font-weight:650}.lead{color:#617a84}
+.section{padding:72px 0}.section.tight{padding:54px 0}
+.hero{background:#fff;padding:52px 0 58px}.hero-grid{gap:50px;grid-template-columns:1.05fr .95fr}
+.hero-card{min-height:500px;border-radius:0;background:#fff;box-shadow:none;overflow:visible}
+.hero-card::before{display:none}.hero-img{width:100%;right:0;bottom:0;filter:none}
+.hero-badge{left:18px;top:18px;color:#55707b;background:#fff;border:1px solid #a9bcc1;border-radius:4px;backdrop-filter:none}
+.hero-logos{gap:28px}.hero-logos img{height:40px;max-width:155px}
+.about-block{margin-top:54px;padding-top:34px;border-top:1px solid #d9e3e6}.about-intro{color:#55707b;font-size:18px;max-width:1050px}
+.stats{gap:18px}.stat{min-height:126px;border-radius:0;border:1px solid #d5e0e3;background:#fff;padding:20px}.stat b{color:#55707b;font-size:28px}.stat span{color:#6b8088}
+.audience-block{margin-top:22px;padding:28px 32px;background:#fff;border:1px solid #a8bbc1;border-radius:0}
+.audience-block>.eyebrow{color:#55707b}.audience-grid{gap:6px 46px}.audience-item{color:#55707b;font-size:17px}.audience-item:before{width:13px;height:13px;background:#e7f0f2;border:1.5px solid #6f949e;box-shadow:4px 0 0 rgba(111,148,158,.28)}
+#formats{padding-top:58px;border-top:1px solid #eef2f3}.formats-title{font-size:34px;color:#55707b}.cards3{gap:18px}.card{border:1px solid #a8bbc1;border-radius:0;box-shadow:none;padding:28px;background:#fff}.card.accent{background:#edf5f6;border:2px solid #6f929b;box-shadow:none}.pill{border-radius:4px;background:#edf4f5;color:#55707b;padding:7px 10px}.accent .pill{background:#dbe9ec;color:#55707b}.recommended{background:#5f808b!important;color:#fff!important;border-radius:3px!important}.list li::before,.accent .list li::before{color:#6f919a}.team-strip{background:#fff;border:1px solid #9db1b7;border-radius:0;padding:22px 26px}
+.learn{background:#fff;border-top:1px solid #eef2f3}.result-feature{border-top:1px solid #9fb2b8!important}.result-row{border-bottom:1px solid #d9e3e6!important;background:#fff!important}.result-row strong{color:#55707b!important}.result-dot{background:#e6eef0!important;border-color:#6f929b!important;box-shadow:4px 0 0 rgba(111,146,155,.25)!important}.manager-results{margin-top:30px!important}.manager-results h3{color:#55707b!important}.result-box{border:1px solid #6f919a!important;border-radius:24px!important;background:#fff!important;color:#55707b!important}
+.tasks{gap:10px}.task{min-height:88px;border-radius:0;border:1px solid #d6e0e3;background:#fff;padding:14px 16px}.num{color:#91a4aa;margin-bottom:5px}.task strong{color:#55707b;font-size:16px}
+.program{background:#eef4f5;color:#55707b;border-top:1px solid #d6e0e3;border-bottom:1px solid #d6e0e3}.program h2,.program .eyebrow{color:#55707b}.day-grid{gap:16px}.day{background:#fff;color:#55707b;border:1px solid #9eb2b8;border-radius:0;padding:24px}.day-tag{background:#dfeaec;color:#55707b;border-radius:4px}.day ul{color:#627b84}.program-cta .btn{background:#5f808b;color:#fff;border-radius:6px}
+.geo-panel{background:#f1f6f7;border:1px solid #a9bcc1;border-radius:0}.city{border-radius:999px;border:1px solid #b7c7cb;color:#55707b}.map{border-radius:0;background:#5d7d87}.map:before,.map:after{background:rgba(223,238,240,.20)}.map-label p{color:#eaf0f1}
+.partners{gap:18px}.partner{border:1px solid #a8bbc1;border-radius:0;box-shadow:none}.partner p{color:#6b8088}
+.cta{padding:58px 0}.cta-box{border-radius:0;background:#f2f7f8;border:1px solid #a8bbc1}.field input{border-radius:4px!important;border-color:#a8bbc1!important}.footer{border-top:1px solid #d7e1e4;color:#6f838b}
+.modal-card{border-radius:0!important;border:1px solid #9fb2b8!important}.campus-photo,.campus-list span{border-radius:0!important}
+@media(max-width:900px){.wrap{width:min(100% - 36px,1320px)}.hero-grid{gap:24px}.hero-card{min-height:350px;order:-1}h1{font-size:46px}}
+@media(max-width:600px){
+ .wrap{width:min(100% - 28px,1320px)}.section{padding:48px 0}.section.tight{padding:38px 0}.hero{padding:24px 0 34px}
+ h1{font-size:38px}.hero-card{min-height:270px}.hero-badge{font-size:10px}.hero-logos img{height:30px;max-width:110px}
+ .about-block{margin-top:30px;padding-top:24px}.about-intro{font-size:16px}.stat{min-height:92px;border-radius:0}.stat b{font-size:22px}
+ .audience-block{padding:18px 16px;border-radius:0}.audience-item{font-size:15px}.formats-title{font-size:25px}.card,.day,.partner{border-radius:0}
+ .program h2,h2{font-size:25px}.task{min-height:76px}.result-box{border-radius:18px!important}
+ .cta-box{border-radius:0}.btn{border-radius:4px}
+}
+
+/* v13 — правки по комментариям */
+.section-main-title{font-size:38px!important;line-height:1.08!important;letter-spacing:-.025em!important;text-transform:none!important;color:#55707b!important;margin-bottom:20px!important;font-weight:800!important}
+.audience-block>.section-main-title{font-size:34px!important;color:#55707b!important;margin-bottom:18px!important}
+#formats .cards3{margin-top:24px!important}
+.team-count{display:inline-flex;margin-left:8px;padding:7px 10px;border:1px solid #a8bbc1;background:#fff;color:#55707b;font-size:12px;font-weight:800;border-radius:4px;vertical-align:top}
+.card.accent .team-count{border-color:#6f929b;background:#f8fbfb}
+.card.accent .recommended{display:inline-flex!important;margin-bottom:12px!important;margin-right:10px!important;background:#0e766c!important;color:#fff!important;font-size:12px!important;font-weight:900!important;letter-spacing:.02em!important;padding:8px 11px!important;border-radius:4px!important;box-shadow:0 0 0 3px rgba(14,118,108,.10)!important}
+.card.accent .list{columns:2;column-gap:18px}
+.card.accent .list li{break-inside:avoid;margin-top:8px;margin-bottom:8px}
+.program{background:#d9eeee!important;border-top:1px solid #b9d8da!important;border-bottom:1px solid #b9d8da!important}
+.program .section-main-title,.program h2{color:#345c63!important}
+.program .day{background:#fff!important;border-color:#8fb2b7!important}
+.program .day-tag{background:#c8e4e5!important;color:#345c63!important}
+.program .day ul{color:#4f7077!important}
+@media(max-width:900px){.card.accent .list{columns:1}}
+@media(max-width:600px){.section-main-title{font-size:29px!important;margin-bottom:16px!important}.audience-block>.section-main-title{font-size:27px!important}.team-count{margin-left:6px}.card.accent .recommended{display:inline-flex!important}}
+
+/* v15 — unified restrained sales visual system */
+:root{--ink:#183033;--muted:#64787b;--line:#d8e5e2;--mint:#087b73;--mint-dark:#075f59;--mint-soft:#edf6f3;--mint-mid:#dceee9;--white:#fff;--shadow:0 10px 28px rgba(20,64,61,.07)}
+body{color:var(--ink);background:#fff}
+.section{padding:76px 0}.section.tight{padding:64px 0}
+.section-main-title{color:var(--ink)!important;text-transform:none!important;letter-spacing:-.025em!important;font-size:38px!important;line-height:1.08!important;font-weight:800!important;margin-bottom:28px!important}
+.eyebrow:not(.section-main-title){color:var(--mint)}
+.btn{border-radius:10px;box-shadow:none}.btn.primary{background:var(--mint)!important;color:#fff!important}.btn.primary:hover{background:var(--mint-dark)!important}
+.btn.secondary{background:#fff;border-color:#aac6c0;color:var(--mint-dark)}
+.hero{background:linear-gradient(135deg,#f4f8f7 0%,#fff 58%,#edf6f3 100%)}
+.hero-card{background:linear-gradient(150deg,#0b7068,#07554f);box-shadow:var(--shadow)}
+.hero-card::before{background:radial-gradient(circle at 70% 20%,rgba(255,255,255,.13),transparent 38%)}
+.chip{border-color:var(--line);border-radius:10px}.stat{border-color:var(--line);border-radius:18px;box-shadow:none}
+.audience-block{background:var(--mint-soft)!important;border-color:#cfe2dd!important;border-radius:20px!important}
+.audience-item:before{border-color:var(--mint)!important}
+#formats{background:#fff;border-top:0!important;padding-top:70px}
+#formats .cards3{align-items:stretch;gap:16px!important}
+#formats .card{border:1px solid var(--line)!important;border-radius:20px!important;padding:26px!important;box-shadow:none!important}
+#formats .card.accent{background:#fff!important;border:2px solid var(--mint)!important;box-shadow:0 10px 30px rgba(8,123,115,.08)!important}
+#formats .pill{background:transparent!important;color:var(--mint)!important;padding:0!important;border-radius:0!important;font-size:13px!important;letter-spacing:.03em!important;text-transform:uppercase!important}
+#formats .team-count{font-size:21px!important;color:var(--ink)!important;margin-bottom:14px!important}
+#formats .card.accent .recommended{top:22px!important;right:22px!important;background:var(--mint)!important;color:#fff!important;border-radius:999px!important;padding:6px 10px!important;font-size:11px!important;box-shadow:none!important}
+#formats .card h3{font-size:22px;margin-top:4px}
+#formats .list{margin-top:20px;padding:0;list-style:none}
+#formats .list li{position:relative;padding:9px 0 9px 25px;border-bottom:1px solid #edf2f1}
+#formats .list li:last-child{border-bottom:0}
+#formats .list li::before{content:'✓';position:absolute;left:0;color:var(--mint);font-weight:800}
+#formats .card.accent .team-special{background:var(--mint-soft);margin:0 -10px;padding:9px 10px 9px 35px;border-bottom:2px solid #fff;color:var(--ink)!important;font-weight:700;border-radius:6px}
+#formats .card.accent .team-special::before{left:10px}
+#formats .card.accent .team-special:nth-of-type(5){margin-bottom:12px}
+#formats .shared-benefit{color:var(--muted)!important;font-size:14px!important}
+#formats .team-strip{margin-top:18px;background:var(--mint-soft)!important;border:1px solid #c8dfda!important;border-radius:18px!important;padding:20px 24px!important}
+#formats .team-strip strong{color:var(--ink)}
+.learn{background:var(--mint-dark)!important;color:#fff!important;padding:76px 0!important}
+.learn .section-main-title{color:#fff!important}
+.learn .result-feature{border:0!important;gap:16px!important;margin-top:0!important}
+.learn .result-list{background:var(--mint-mid)!important;padding:16px!important;border-radius:20px!important}
+.learn .result-row{background:#fff!important;border:0!important;border-radius:12px!important;padding:19px 20px!important}
+.learn .result-row strong{color:var(--ink)!important;font-size:18px!important}
+.learn .result-dot{background:#fff!important;border-color:var(--mint)!important;box-shadow:none!important}
+.learn .manager-results{display:flex;align-items:stretch}
+.learn .result-boxes{width:100%}
+.learn .manager-results .result-box{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.28)!important;color:#fff!important;border-radius:16px!important;font-weight:600}
+section.section.tight:has(.tasks){background:#fff}
+.tasks{gap:12px!important}.task{border:1px solid var(--line)!important;border-radius:16px!important;background:#fff!important;padding:18px!important;box-shadow:none}
+.task-icon{width:36px;height:36px;display:grid!important;place-items:center;background:var(--mint-soft);border-radius:10px;color:var(--mint)!important;font-size:18px!important;margin-bottom:12px!important}
+.task strong{color:var(--ink)!important}
+.program{background:var(--mint-soft)!important;color:var(--ink)!important;border:0!important}
+.program .section-main-title{color:var(--ink)!important}
+.program .day-grid{position:relative;gap:16px!important}
+.program .day{background:#fff!important;color:var(--ink)!important;border:1px solid #c7ddd8!important;border-radius:20px!important;box-shadow:none!important}
+.program .day-tag{background:var(--mint)!important;color:#fff!important;border-radius:999px!important;padding:7px 11px!important}
+.program .day h3{color:var(--ink)}.program .day ul{color:var(--muted)!important}
+.program-cta .btn{background:var(--mint)!important;color:#fff!important;border-radius:10px!important}
+.cta{background:#fff!important;padding:76px 0!important}
+.cta-box{background:var(--mint-dark)!important;color:#fff!important;border-radius:24px!important;border:0!important;box-shadow:none!important}
+.cta-box h2{color:#fff}.cta-box .muted,.cta-box .download-note{color:#d8e9e5!important}.cta-box .field label{color:#e6f1ef}.cta-box .form-note{color:#c7dcda!important}
+.cta-box .field input{border:0;border-radius:10px}.cta-box .btn.primary{background:#fff!important;color:var(--mint-dark)!important}
+/* Developers deliberately follows the conversion form as a quieter trust block */
+#apply + .section.tight{background:#fff;border-top:1px solid #eef3f2;padding-top:58px}
+#apply + .section.tight .partners{gap:14px!important}
+#apply + .section.tight .partner{border:1px solid var(--line)!important;border-radius:16px!important;box-shadow:none!important;background:#fff!important}
+.footer{background:#f5f8f7!important;color:var(--muted)!important;border-top:1px solid var(--line)!important}
+@media(max-width:900px){.section-main-title{font-size:32px!important}.learn .result-feature{grid-template-columns:1fr!important}}
+@media(max-width:600px){.section{padding:54px 0}.section.tight{padding:48px 0}.section-main-title{font-size:28px!important;margin-bottom:20px!important}#formats{padding-top:52px}.cards3{gap:12px!important}#formats .card{padding:22px!important}#formats .card.accent .recommended{position:static!important;margin-bottom:12px!important}.team-strip{display:block}.learn{padding:54px 0!important}.learn .result-list{padding:10px!important}.cta{padding:54px 0!important}}
+
+
+/* v18: balance the SberMedAI mark with the other developer logos */
+.partner-sbermed img{height:38px!important;max-width:150px!important}
+@media(max-width:600px){.partner-sbermed img{height:34px!important;max-width:135px!important}}
+
+/* v19 targeted refinements */
+.download-note{display:inline-flex!important;align-items:center;gap:8px;margin-top:16px!important;padding:9px 13px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(255,255,255,.10);color:#fff!important;font-size:14px!important;font-weight:750;letter-spacing:.01em}
+.download-note::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--mint);font-size:12px;font-weight:900}
+#formats .campus-accent{padding-top:12px!important;padding-bottom:12px!important}
+#formats .campus-accent strong{font-size:18px;color:var(--mint)}
+@media(max-width:600px){.download-note{border-radius:14px;line-height:1.3}}
+</style>
+
+<style id="v14-comments">
+/* Правки по КОММЕНТАРИИ ии (1): тексты вне указанных пунктов не изменены */
+.learn{background:#0e766c!important;color:#fff!important;border:0!important}
+.learn .section-main-title{color:#fff!important}
+.learn .result-feature{border-top:1px solid rgba(255,255,255,.35)!important;margin-top:24px!important}
+.learn .result-list{background:#dff2e9!important;padding:18px!important;border-radius:18px!important}
+.learn .result-row{background:#fff!important;border:1px solid rgba(14,118,108,.12)!important;border-radius:14px!important}
+.learn .manager-results{background:transparent!important;border:0!important;padding:0!important;margin-top:0!important}
+.learn .manager-results .result-box{background:rgba(255,255,255,.10)!important;border:1px solid rgba(255,255,255,.45)!important;color:#fff!important}
+.task-icon{width:34px;height:34px;border-radius:50%;display:grid!important;place-items:center;background:#e6f1ef;color:#0e766c!important;font-size:17px!important;font-weight:900;margin-bottom:10px!important}
+#formats .card .pill{display:inline-flex;vertical-align:middle;margin-right:6px;margin-bottom:10px!important}
+#formats .team-count{display:block!important;margin:0 0 16px!important;font-size:18px!important;font-weight:800!important;color:#55707b!important}
+#formats .card.accent .recommended{position:absolute!important;top:18px!important;right:18px!important;margin:0!important;background:#f5b544!important;color:#17302f!important;box-shadow:none!important;border-radius:999px!important;padding:7px 10px!important}
+#formats .card.accent{position:relative!important}
+#formats .team-special{font-weight:750;color:#0e766c}
+#formats .shared-benefit{color:#6e858c;font-size:14px}
+.program .section-main-title{margin-bottom:26px!important}
+@media(max-width:600px){#formats .card.accent .recommended{position:static!important;margin:0 0 12px!important}.learn .result-list{padding:12px!important}.learn .manager-results .result-box{color:#fff!important}}
+
+/* v15 — unified restrained sales visual system */
+:root{--ink:#183033;--muted:#64787b;--line:#d8e5e2;--mint:#087b73;--mint-dark:#075f59;--mint-soft:#edf6f3;--mint-mid:#dceee9;--white:#fff;--shadow:0 10px 28px rgba(20,64,61,.07)}
+body{color:var(--ink);background:#fff}
+.section{padding:76px 0}.section.tight{padding:64px 0}
+.section-main-title{color:var(--ink)!important;text-transform:none!important;letter-spacing:-.025em!important;font-size:38px!important;line-height:1.08!important;font-weight:800!important;margin-bottom:28px!important}
+.eyebrow:not(.section-main-title){color:var(--mint)}
+.btn{border-radius:10px;box-shadow:none}.btn.primary{background:var(--mint)!important;color:#fff!important}.btn.primary:hover{background:var(--mint-dark)!important}
+.btn.secondary{background:#fff;border-color:#aac6c0;color:var(--mint-dark)}
+.hero{background:linear-gradient(135deg,#f4f8f7 0%,#fff 58%,#edf6f3 100%)}
+.hero-card{background:linear-gradient(150deg,#0b7068,#07554f);box-shadow:var(--shadow)}
+.hero-card::before{background:radial-gradient(circle at 70% 20%,rgba(255,255,255,.13),transparent 38%)}
+.chip{border-color:var(--line);border-radius:10px}.stat{border-color:var(--line);border-radius:18px;box-shadow:none}
+.audience-block{background:var(--mint-soft)!important;border-color:#cfe2dd!important;border-radius:20px!important}
+.audience-item:before{border-color:var(--mint)!important}
+#formats{background:#fff;border-top:0!important;padding-top:70px}
+#formats .cards3{align-items:stretch;gap:16px!important}
+#formats .card{border:1px solid var(--line)!important;border-radius:20px!important;padding:26px!important;box-shadow:none!important}
+#formats .card.accent{background:#fff!important;border:2px solid var(--mint)!important;box-shadow:0 10px 30px rgba(8,123,115,.08)!important}
+#formats .pill{background:transparent!important;color:var(--mint)!important;padding:0!important;border-radius:0!important;font-size:13px!important;letter-spacing:.03em!important;text-transform:uppercase!important}
+#formats .team-count{font-size:21px!important;color:var(--ink)!important;margin-bottom:14px!important}
+#formats .card.accent .recommended{top:22px!important;right:22px!important;background:var(--mint)!important;color:#fff!important;border-radius:999px!important;padding:6px 10px!important;font-size:11px!important;box-shadow:none!important}
+#formats .card h3{font-size:22px;margin-top:4px}
+#formats .list{margin-top:20px;padding:0;list-style:none}
+#formats .list li{position:relative;padding:9px 0 9px 25px;border-bottom:1px solid #edf2f1}
+#formats .list li:last-child{border-bottom:0}
+#formats .list li::before{content:'✓';position:absolute;left:0;color:var(--mint);font-weight:800}
+#formats .card.accent .team-special{background:var(--mint-soft);margin:0 -10px;padding:9px 10px 9px 35px;border-bottom:2px solid #fff;color:var(--ink)!important;font-weight:700;border-radius:6px}
+#formats .card.accent .team-special::before{left:10px}
+#formats .card.accent .team-special:nth-of-type(5){margin-bottom:12px}
+#formats .shared-benefit{color:var(--muted)!important;font-size:14px!important}
+#formats .team-strip{margin-top:18px;background:var(--mint-soft)!important;border:1px solid #c8dfda!important;border-radius:18px!important;padding:20px 24px!important}
+#formats .team-strip strong{color:var(--ink)}
+.learn{background:var(--mint-dark)!important;color:#fff!important;padding:76px 0!important}
+.learn .section-main-title{color:#fff!important}
+.learn .result-feature{border:0!important;gap:16px!important;margin-top:0!important}
+.learn .result-list{background:var(--mint-mid)!important;padding:16px!important;border-radius:20px!important}
+.learn .result-row{background:#fff!important;border:0!important;border-radius:12px!important;padding:19px 20px!important}
+.learn .result-row strong{color:var(--ink)!important;font-size:18px!important}
+.learn .result-dot{background:#fff!important;border-color:var(--mint)!important;box-shadow:none!important}
+.learn .manager-results{display:flex;align-items:stretch}
+.learn .result-boxes{width:100%}
+.learn .manager-results .result-box{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.28)!important;color:#fff!important;border-radius:16px!important;font-weight:600}
+section.section.tight:has(.tasks){background:#fff}
+.tasks{gap:12px!important}.task{border:1px solid var(--line)!important;border-radius:16px!important;background:#fff!important;padding:18px!important;box-shadow:none}
+.task-icon{width:36px;height:36px;display:grid!important;place-items:center;background:var(--mint-soft);border-radius:10px;color:var(--mint)!important;font-size:18px!important;margin-bottom:12px!important}
+.task strong{color:var(--ink)!important}
+.program{background:var(--mint-soft)!important;color:var(--ink)!important;border:0!important}
+.program .section-main-title{color:var(--ink)!important}
+.program .day-grid{position:relative;gap:16px!important}
+.program .day{background:#fff!important;color:var(--ink)!important;border:1px solid #c7ddd8!important;border-radius:20px!important;box-shadow:none!important}
+.program .day-tag{background:var(--mint)!important;color:#fff!important;border-radius:999px!important;padding:7px 11px!important}
+.program .day h3{color:var(--ink)}.program .day ul{color:var(--muted)!important}
+.program-cta .btn{background:var(--mint)!important;color:#fff!important;border-radius:10px!important}
+.cta{background:#fff!important;padding:76px 0!important}
+.cta-box{background:var(--mint-dark)!important;color:#fff!important;border-radius:24px!important;border:0!important;box-shadow:none!important}
+.cta-box h2{color:#fff}.cta-box .muted,.cta-box .download-note{color:#d8e9e5!important}.cta-box .field label{color:#e6f1ef}.cta-box .form-note{color:#c7dcda!important}
+.cta-box .field input{border:0;border-radius:10px}.cta-box .btn.primary{background:#fff!important;color:var(--mint-dark)!important}
+/* Developers deliberately follows the conversion form as a quieter trust block */
+#apply + .section.tight{background:#fff;border-top:1px solid #eef3f2;padding-top:58px}
+#apply + .section.tight .partners{gap:14px!important}
+#apply + .section.tight .partner{border:1px solid var(--line)!important;border-radius:16px!important;box-shadow:none!important;background:#fff!important}
+.footer{background:#f5f8f7!important;color:var(--muted)!important;border-top:1px solid var(--line)!important}
+@media(max-width:900px){.section-main-title{font-size:32px!important}.learn .result-feature{grid-template-columns:1fr!important}}
+@media(max-width:600px){.section{padding:54px 0}.section.tight{padding:48px 0}.section-main-title{font-size:28px!important;margin-bottom:20px!important}#formats{padding-top:52px}.cards3{gap:12px!important}#formats .card{padding:22px!important}#formats .card.accent .recommended{position:static!important;margin-bottom:12px!important}.team-strip{display:block}.learn{padding:54px 0!important}.learn .result-list{padding:10px!important}.cta{padding:54px 0!important}}
+
+
+/* v16 — calmer Mednet-inspired palette; no content changes */
+:root{
+ --ink:#243b42;
+ --muted:#607983;
+ --line:#d8e3e5;
+ --mint:#5f8f91;
+ --mint-dark:#426f72;
+ --mint-soft:#f0f5f4;
+ --mint-mid:#e2ecea;
+ --white:#fff;
+ --shadow:0 10px 28px rgba(45,76,80,.055);
+}
+.learn{background:#4f7d80!important}
+.learn .result-list{background:#dfeae8!important}
+.learn .manager-results .result-box{background:rgba(255,255,255,.09)!important;border-color:rgba(255,255,255,.24)!important}
+.program{background:#eef4f3!important}
+.program .day{border-color:#d3e0de!important}
+.cta-box{background:#486f72!important}
+.btn,.program-cta .btn{background:#5f8f91!important}
+#formats .card.accent{border-color:#6f999a!important}
+#formats .recommended{background:#5f8f91!important;color:#fff!important}
+.task-icon{background:#edf3f2!important;color:#5f8f91!important}
+
+/* v18: balance the SberMedAI mark with the other developer logos */
+.partner-sbermed img{height:38px!important;max-width:150px!important}
+@media(max-width:600px){.partner-sbermed img{height:34px!important;max-width:135px!important}}
+
+/* v19 targeted refinements */
+.download-note{display:inline-flex!important;align-items:center;gap:8px;margin-top:16px!important;padding:9px 13px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(255,255,255,.10);color:#fff!important;font-size:14px!important;font-weight:750;letter-spacing:.01em}
+.download-note::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--mint);font-size:12px;font-weight:900}
+#formats .campus-accent{padding-top:12px!important;padding-bottom:12px!important}
+#formats .campus-accent strong{font-size:18px;color:var(--mint)}
+@media(max-width:600px){.download-note{border-radius:14px;line-height:1.3}}
+</style>
+
+<style>
+/* v28 — final hard override for participation cards */
+#formats .cards3{grid-template-columns:1.08fr .98fr .94fr!important;gap:18px!important;align-items:stretch!important;}
+#formats .cards3 > article{height:100%!important;transform:none!important;}
+
+/* 20–30: primary recommended format — solid CTA teal panel */
+#formats article.format-featured,
+#formats article.card.accent.format-featured{
+  background:#5f8f91!important;
+  background-image:none!important;
+  border:1px solid #5f8f91!important;
+  box-shadow:0 16px 34px rgba(49,91,93,.18)!important;
+  color:#fff!important;
+}
+#formats article.format-featured::before{content:none!important;display:none!important;}
+#formats article.format-featured::after{
+  content:""!important;display:block!important;position:absolute!important;
+  left:22px!important;right:22px!important;top:0!important;height:3px!important;
+  background:rgba(255,255,255,.82)!important;border-radius:0 0 3px 3px!important;
+}
+#formats article.format-featured .pill,
+#formats article.format-featured h3,
+#formats article.format-featured p,
+#formats article.format-featured .list li,
+#formats article.format-featured .shared-benefit{color:#fff!important;}
+#formats article.format-featured .pill{opacity:.96!important;font-weight:850!important;}
+#formats article.format-featured .recommended{
+  background:#fff!important;color:#4f7f82!important;border:0!important;box-shadow:none!important;
+}
+/* participant count: teal-on-light inset, not a stark white box */
+#formats article.format-featured .team-count{
+  display:block!important;
+  background:rgba(255,255,255,.14)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.48)!important;
+  border-radius:6px!important;
+  padding:10px 12px!important;
+  margin:4px 0 16px!important;
+  font-size:23px!important;
+}
+#formats article.format-featured .list li{
+  background:transparent!important;border-bottom:1px solid rgba(255,255,255,.17)!important;
+  margin:0!important;padding:11px 0 11px 27px!important;border-radius:0!important;
+}
+#formats article.format-featured .list li::before{color:#e3f2f0!important;left:0!important;}
+#formats article.format-featured .venue-highlight,
+#formats article.format-featured .team-special{
+  background:transparent!important;margin:0!important;padding:11px 0 11px 27px!important;
+  color:#fff!important;border-radius:0!important;
+}
+#formats article.format-featured .campus-note{
+  background:transparent!important;color:#e6f2f1!important;margin:0!important;
+  padding:2px 0 10px 27px!important;border-radius:0!important;font-weight:650!important;
+}
+
+/* 5–20: secondary team format */
+#formats .cards3 > article:nth-child(2){
+  background:#f1f8f6!important;border:1.5px solid #a8cdc5!important;
+  box-shadow:0 7px 20px rgba(8,123,115,.055)!important;
+}
+/* individual: neutral */
+#formats .cards3 > article:nth-child(3){
+  background:#fff!important;border:1px solid #d8e5e2!important;box-shadow:none!important;
+}
+@media(max-width:900px){#formats .cards3{grid-template-columns:1fr!important;gap:14px!important;}}
+</style>
+
+<style>
+/* v29 — requested targeted edits only */
+.hero .hero-program-label{
+  text-transform:none!important;
+  letter-spacing:0!important;
+}
+.hero .hero-actions .btn.secondary{
+  background:#fff!important;
+  color:#5f8f91!important;
+  border:2px solid #5f8f91!important;
+}
+.hero .hero-actions .btn.secondary:hover{
+  background:#f4f9f8!important;
+}
+#formats article.format-featured,
+#formats article.format-featured .pill,
+#formats article.format-featured .recommended,
+#formats article.format-featured .team-count,
+#formats article.format-featured h3,
+#formats article.format-featured p,
+#formats article.format-featured .list li,
+#formats article.format-featured .campus-note,
+#formats article.format-featured strong{
+  color:#fff!important;
+}
+#formats article.format-featured .recommended{
+  background:rgba(255,255,255,.15)!important;
+  border:1px solid rgba(255,255,255,.42)!important;
+}
+#formats article.format-featured .team-count{
+  background:rgba(255,255,255,.12)!important;
+  border:1px solid rgba(255,255,255,.45)!important;
+}
+.consent-note label{
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  cursor:pointer;
+}
+.consent-note input[type="checkbox"]{
+  width:17px;
+  height:17px;
+  margin:2px 0 0;
+  flex:0 0 auto;
+  accent-color:#5f8f91;
+}
+.consent-note a{
+  color:inherit;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+</style>
+<style id="v30-featured-white-text-fix">
+/* Requested v30 fix: all header text in the recommended 20–30 card is white. */
+#formats article.format-featured .pill,
+#formats article.format-featured .recommended,
+#formats article.format-featured .team-count{
+  color:#fff!important;
+}
+#formats article.format-featured .recommended{
+  background:rgba(255,255,255,.16)!important;
+  border:1px solid rgba(255,255,255,.42)!important;
+}
+#formats article.format-featured .team-count{
+  background:rgba(255,255,255,.14)!important;
+  border:1px solid rgba(255,255,255,.48)!important;
+}
+</style>
+
+<style id="v34-requested-fixes">
+.program .day-tag{font-size:14px!important;padding:10px 15px!important;border-radius:999px!important;line-height:1.2!important;font-weight:800!important;}
+@media(max-width:600px){.program .day-tag{font-size:13px!important;padding:9px 13px!important;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+<div class="wrap inner">
+<div class="brand"><img alt="ЦНИИОИЗ" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-cniiz.png"/><span class="desktop-only">ИИ-агенты в здравоохранении</span></div>
+<nav class="nav"><a href="#about">О программе</a><a href="#formats">Форматы</a><a href="#program">Программа</a></nav>
+<a class="btn primary" href="#apply">Узнать условия участия</a>
+</div>
+</header>
+<main>
+<section class="hero">
+<div class="wrap hero-grid">
+<div>
+<div aria-label="Разработчики программы" class="hero-logos">
+<img alt="ЦНИИОИЗ Минздрава России" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-cniiz.png"/>
+<img alt="Школа 21" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-school21.png"/>
+<img alt="SberMedAI" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-sbermedai.png"/>
+</div>
+<div class="eyebrow hero-program-label">Новая программа Школы 21 (Сбер), ЦНИИОИЗ Минздрава РФ и СберМедИИ</div>
+<h1>ИИ-агенты<br/>в здравоохранении</h1>
+<p class="lead">Делегируйте часть рутинных задач цифровым помощникам</p>
+<div class="hero-actions"><a class="btn primary" href="#apply">Узнать условия участия</a><a class="btn secondary" href="#formats">Посмотреть форматы участия</a></div>
+</div>
+<div class="hero-card">
+<img alt="Рука и цифровой интерфейс" class="hero-img" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/hero-hand.png"/>
+</div>
+</div>
+<div class="wrap about-block" id="about">
+<div class="eyebrow section-main-title">О программе</div>
+<p class="about-intro">Обучение сфокусировано на практическом применении ИИ-агентов для управленческих задач в здравоохранении — на уровне медицинской организации и отрасли.</p>
+<div class="stats">
+<div class="stat"><b>20 акад. часов</b><span>объем программы</span></div>
+<div class="stat"><b>1 день онлайн + 2 дня очно</b><span>формат обучения</span></div>
+<div class="stat"><b>Технические знания не требуются</b><span>для любого уровня владения ИИ</span></div>
+</div>
+<div class="audience-block">
+<div class="eyebrow section-main-title">Программа для специалистов сферы здравоохранения</div>
+<div class="audience-grid">
+<div class="audience-item">Региональных министров и их команд</div>
+<div class="audience-item">Главных врачей, заместителей и команд медицинских организаций</div>
+<div class="audience-item">Руководителей учреждений, подведомственных Минздраву</div>
+<div class="audience-item">Специалистов, желающих автоматизировать управленческую рутину</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section" id="formats">
+<div class="wrap">
+<div class="eyebrow section-main-title">Форматы участия</div>
+
+
+<div class="cards3" style="margin-top:34px">
+
+<article class="card accent format-featured" style="color:#fff!important;">
+<span class="pill" style="color:#fff!important;">Командный формат</span><span class="recommended" style="color:#fff!important;">Рекомендовано</span>
+<span class="team-count" style="color:#fff!important;">20–30 человек</span>
+<h3 style="color:#fff!important;">Максимум возможностей для команды</h3>
+<p class="muted" style="color:#fff!important;">Организация обучения под задачи вашей организации</p>
+<ul class="list" style="color:#fff!important;">
+<li class="team-special" style="color:#fff!important;">Создание ИИ-агента под задачи вашей организации</li>
+<li class="team-special" style="color:#fff!important;">Разбор кейсов вашей организации</li>
+<li class="team-special venue-highlight" style="color:#fff!important;">Выбор площадки обучения</li>
+<li class="campus-note" style="color:#fff!important;">30+ городов присутствия Школы 21</li>
+<li class="team-special" style="color:#fff!important;">Выбор даты обучения</li>
+<li style="color:#fff!important;">Обучение команды для внедрения ИИ-агентов в работу организации</li>
+<li style="color:#fff!important;">Общее понимание ИИ и единые принципы его применения</li>
+</ul>
+</article>
+
+<article class="card">
+<span class="pill">Командный формат</span>
+<span class="team-count">5–20 человек</span>
+<h3>Быстрое внедрение ИИ в организации</h3>
+<p class="muted">Общее понимание ИИ и единые принципы его применения</p>
+<ul class="list">
+<li><strong>Создание ИИ-агента для решения управленческих задач</strong></li>
+<li><strong>Обучение команды для внедрения ИИ-агентов в работу организации</strong></li>
+<li><strong>Единое понимание принципов применения ИИ</strong></li>
+<li>Выбор площадки обучения (по согласованию)</li>
+<li class="campus-note">30+ городов присутствия Школы 21</li>
+<li>Согласование даты обучения</li>
+</ul>
+</article>
+
+<article class="card">
+<span class="pill">Индивидуально</span>
+<span class="team-count">до 5 человек</span>
+<h3>Делегируйте часть управленческих задач ИИ</h3>
+<p class="muted individual-subtitle">Новый инструмент для решения ежедневных задач</p>
+<ul class="list">
+<li><strong>Создание ИИ-агента для решения управленческих задач</strong></li>
+<li><strong>Разбор типовых кейсов отрасли</strong></li>
+<li><strong>Поддержка экспертов</strong></li>
+<li>Совместное обучение с коллегами из сферы здравоохранения</li>
+<li>Фиксированные площадка и дата обучения</li>
+</ul>
+</article>
+</div>
+<div class="team-strip"><div><strong>Стоимость для всех форматов — 75 000 ₽ / участник</strong><div class="muted">Для команды 20–30 человек возможна организация очной части на базе подходящего кампуса «Школы 21».</div></div><a class="btn primary" href="#apply">Узнать условия участия</a></div>
+</div>
+</section>
+<section class="section learn">
+<div class="wrap">
+<div class="eyebrow section-main-title">Чему вы научитесь</div>
+
+<div class="result-feature">
+<div class="result-list">
+<div class="result-row"><span class="result-dot"></span><strong>Разрабатывать ИИ-агентов без программирования</strong></div>
+<div class="result-row"><span class="result-dot"></span><strong>Подключать ИИ-агентов к различным базам знаний и источникам данных</strong></div>
+<div class="result-row"><span class="result-dot"></span><strong>Формулировать требования и технические задания на разработку ИИ-агента под конкретные задачи</strong></div>
+<div class="result-row"><span class="result-dot"></span><strong>Создавать и структурировать персональную базу знаний с использованием ИИ</strong></div>
+</div>
+<div class="manager-results">
+
+<div class="result-boxes">
+<div class="result-box">Оценивать риски,<br/>безопасность и эффект от внедрения<br/>ИИ-инструментов</div>
+<div class="result-box">Анализировать предлагаемые<br/>поставщиками ИИ-сервисы во избежание<br/>неэффективных и дорогостоящих решений</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="section tight">
+<div class="wrap"><div class="eyebrow section-main-title">Что можно делегировать ИИ-агенту</div>
+<div class="tasks" style="margin-top:28px">
+<div class="task"><span class="num task-icon" aria-hidden="true">✚</span><strong>Анализ очередей и маршрутов пациентов</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">◉</span><strong>Контроль доступности записи к врачам</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">⌁</span><strong>Поиск аномалий в отчетах</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">▤</span><strong>Регулярные сводки по ключевым показателям</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">▣</span><strong>Работа с документами и правовыми базами</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">✉</span><strong>Подготовка писем и служебных записок</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">◆</span><strong>Управленческие гипотезы</strong></div>
+<div class="task"><span class="num task-icon" aria-hidden="true">✓</span><strong>Календарь, поручения и напоминания</strong></div>
+</div>
+</div>
+</section>
+<section class="section program" id="program">
+<div class="wrap"><div class="eyebrow section-main-title">Как проходит обучение</div>
+<div class="day-grid">
+<article class="day"><span class="day-tag">День 1 · онлайн</span><h3>Цифровая повестка и основы ИИ</h3><ul><li>Возможности и ограничения LLM для задач здравоохранения</li><li>Практические кейсы внедрения ИИ</li><li>Федеральная повестка и KPI цифровой зрелости</li><li>Требования и риски применения ИИ в отрасли</li></ul></article>
+<article class="day"><span class="day-tag">День 2 · очно · кампус Школы 21</span><h3>Архитектура и создание ИИ-агента</h3><ul><li>Архитектура агента: мозг, инструменты, память</li><li>Low-code среда и рабочие процессы</li><li>Проект «Создаем агента-помощника» под выбранную задачу</li><li>Разбор агентных систем: цифровой помощник врача, контроль ОМП, агенты-управленцы</li></ul></article>
+<article class="day"><span class="day-tag">День 3 · очно · кампус Школы 21</span><h3>Внедрение ИИ-решений в организции</h3><ul><li>Подключение к разработанному ИИ-агенту внешних сервисов и баз данных</li><li>Проект «Создаем мультиагентную клинику»</li><li>Доработка агентного решения и создание инструкция для коллег</li><li>Презентация проектов и обратная связь экспертов</li></ul></article>
+</div>
+<div class="program-cta"><a class="btn" href="#apply">Узнать условия участия</a></div>
+</div>
+</section>
+<section class="cta" id="apply">
+<div class="wrap">
+<div class="cta-box">
+<div><h2>Оставьте контакты — направим программу и информацию об обучении</h2><div class="download-note">Для индивидуального и командного участия</div></div>
+<form class="form-grid" onsubmit="event.preventDefault(); alert('Прототип: форма отправки будет подключена на сайте.');">
+<div class="field"><label>Имя</label><input placeholder="Ваше имя" type="text"/></div>
+<div class="field"><label>Электронная почта *</label><input placeholder="name@example.ru" required="" type="email"/></div>
+<div class="field"><label>Телефон *</label><input placeholder="+7 (___) ___-__-__" required="" type="tel"/></div>
+<div class="field"><label>Должность</label><input placeholder="Ваша должность" type="text"/></div>
+<div class="field full"><label>Название организации</label><input placeholder="Организация" type="text"/></div>
+<div class="field full"><button class="btn primary" type="submit">Узнать условия участия</button></div>
+<div class="field full form-note consent-note"><label><input required="" type="checkbox"/> <span>Даю согласие на обработку персональных данных в соответствии с условиями <a href="https://mednet.ru/napravleniya/obrazovanie/dpo/ii-agent-v-zdravooxranenii-2/pk" target="_blank" rel="noopener">Политики конфиденциальности</a> *</span></label></div>
+</form>
+</div>
+</div>
+</section>
+<section class="section tight">
+<div class="wrap"><div class="eyebrow section-main-title">Разработчики программы</div>
+<div class="partners" style="margin-top:28px">
+<div class="partner"><img alt="ЦНИИОИЗ" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-cniiz.png"/><h3>ЦНИИОИЗ Минздрава России</h3><p>Отраслевая экспертиза и понимание реальных задач руководителя медицинской организации.</p></div>
+<div class="partner"><img alt="Школа 21" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-school21.png"/><h3>«Школа 21» (Сбер)</h3><p>Технологическая инфраструктура, методика практического обучения и опыт разработки ИИ-решений.</p></div>
+<div class="partner partner-sbermed"><img alt="SberMedAI" src="https://mednet.ru/assets/static/ii-agent-v-zdravooxranenii/logo-sbermedai.png"/><h3>СберМедИИ</h3><p>Практические медицинские решения на основе искусственного интеллекта.</p></div>
+</div>
+</div>
+</section>
+</main>
+<footer class="footer"><div class="wrap">Прототип страницы на основе текущего лендинга mednet.ru. Контакты: +7 (495) 618-31-83 · help@mednet.ru</div></footer>
+<div aria-labelledby="campusTitle" aria-modal="true" class="modal" id="campusModal" onclick="if(event.target===this) closeCampuses()" role="dialog">
+<div class="modal-card">
+<button aria-label="Закрыть" class="modal-close" onclick="closeCampuses()" type="button">×</button>
+<div class="eyebrow">География «Школы 21»</div>
+<h2 id="campusTitle" style="margin-bottom:8px">Кампусы в регионах России</h2>
+<p class="muted">Для командного потока конкретная площадка и дата определяются по согласованию с организаторами.</p>
+<div class="campus-modal-grid">
+<div aria-label="Фотографии кампусов Школы 21" class="campus-photos">
+<div class="campus-photo"><img alt="Кампус Школы 21" src="campus-1.png"/><div class="campus-photo-caption">Пространство кампуса «Школы 21»</div></div>
+<div class="campus-photo small"><img alt="Учебное пространство кампуса Школы 21" src="campus-2.png"/><div class="campus-photo-caption">Учебное пространство кампуса</div></div>
+</div>
+<div>
+<h3>Кампусы «Школы 21»</h3>
+<div class="campus-list">
+<span>Москва</span><span>Липецк</span><span>Нижний Новгород</span><span>Южно-Сахалинск</span><span>Пермь</span><span>Улан-Удэ</span><span>Петропавловск-Камчатский</span><span>Ижевск</span><span>Донецк</span><span>Ставрополь</span><span>Магас</span><span>Челябинск</span><span>Владивосток</span><span>Магадан</span><span>Белгород</span><span>Анадырь</span><span>Казань</span><span>Хабаровск</span><span>Рязань</span><span>Новосибирск</span><span>Уфа</span><span>Волгоград</span><span>Омск</span><span>Сургут</span><span>Великий Новгород</span><span>Якутск</span><span>Ярославль</span>
+</div>
+<p class="modal-note">Актуальный перечень и информация о кампусах доступны на сайте «Школы 21».</p>
+<div class="modal-actions"><a class="btn primary" href="https://21-school.ru/campuses" rel="noopener" target="_blank">Сайт «Школы 21»</a></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+function openCampuses(){document.getElementById('campusModal').classList.add('open');document.body.style.overflow='hidden'}
+function closeCampuses(){document.getElementById('campusModal').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCampuses()});
+</script>
+
+<style>
+/* v24 — refined format hierarchy: quiet, editorial, aligned */
+#formats .cards3{
+  grid-template-columns:1.07fr .98fr .95fr!important;
+  gap:16px!important;
+  align-items:stretch!important;
+  position:relative;
+}
+#formats .cards3 > article{height:100%;}
+
+/* Featured team format: emphasis by surface, not by scale/offset */
+#formats .format-featured{
+  transform:none!important;
+  background:linear-gradient(180deg,#e4f3ef 0%,#f7fbfa 56%,#ffffff 100%)!important;
+  border:1.5px solid #6fa9a2!important;
+  box-shadow:0 14px 34px rgba(8,123,115,.11)!important;
+  position:relative;
+  overflow:visible;
+}
+#formats .format-featured::before{
+  content:"";
+  position:absolute;
+  inset:-12px -10px;
+  border-radius:30px;
+  background:#eff8f5;
+  z-index:-1;
+}
+#formats .format-featured::after{
+  content:"";
+  position:absolute;
+  left:24px;right:24px;top:-1.5px;height:3px;
+  border-radius:0 0 3px 3px;
+  background:var(--mint);
+}
+#formats .format-featured h3{font-size:25px!important;}
+#formats .format-featured .team-count{font-size:24px!important;}
+#formats .format-featured .recommended{background:var(--mint)!important;color:#fff!important;box-shadow:none!important;}
+
+/* Secondary team format: subtle team tint */
+#formats .cards3 > article:nth-child(2){
+  background:#f8fbfa!important;
+  border:1.5px solid #b9d5cf!important;
+  box-shadow:0 7px 20px rgba(8,123,115,.045)!important;
+}
+
+/* Individual: intentionally neutral */
+#formats .cards3 > article:nth-child(3){
+  background:#fff!important;
+  border:1px solid var(--line)!important;
+  box-shadow:none!important;
+}
+
+/* Venue = the benefit; campus footprint = supporting fact */
+#formats .format-featured .venue-highlight{
+  margin-top:14px!important;
+  margin-bottom:0!important;
+  padding:11px 12px 11px 34px!important;
+  border-radius:10px 10px 4px 4px!important;
+  background:#dceee9!important;
+}
+#formats .format-featured .venue-highlight::before{left:11px!important;top:11px!important;}
+#formats .campus-note{
+  margin:0 0 6px!important;
+  padding:7px 12px 10px 34px!important;
+  font-size:13px!important;
+  line-height:1.25!important;
+  color:#4e7470!important;
+  font-weight:650!important;
+  border-top:0!important;
+}
+#formats .format-featured .campus-note{
+  background:#eef7f4!important;
+  border-radius:0 0 10px 10px!important;
+}
+#formats .campus-note::before{content:none!important;display:none!important;}
+#formats .cards3 > article:nth-child(2) .campus-note{
+  padding-left:25px!important;
+  color:#5f7775!important;
+}
+
+/* Keep the bottoms visually aligned */
+#formats .team-strip{margin-top:22px!important;}
+@media(max-width:900px){
+  #formats .cards3{grid-template-columns:1fr!important;gap:14px!important;}
+  #formats .format-featured::before{inset:-6px!important;border-radius:24px!important;}
+}
+</style>
+
+
+<style id="v31-final-featured-header-white-fix">
+/* Final override: every header element in the recommended 20–30 card is white. */
+#formats .format-featured .pill,
+#formats .format-featured .recommended,
+#formats .format-featured .team-count,
+#formats article.format-featured .pill,
+#formats article.format-featured .recommended,
+#formats article.format-featured .team-count {
+  color:#fff !important;
+}
+#formats .format-featured .recommended,
+#formats article.format-featured .recommended {
+  background:rgba(255,255,255,.16) !important;
+  border:1px solid rgba(255,255,255,.45) !important;
+}
+#formats .format-featured .team-count,
+#formats article.format-featured .team-count {
+  background:rgba(255,255,255,.14) !important;
+  border:1px solid rgba(255,255,255,.48) !important;
+}
+</style>
+
+<style id="v36-contact-form-refine">
+/* v36 — refined final CTA proportions */
+#apply.cta{padding:54px 0 60px!important;}
+#apply .cta-box{
+  width:min(1180px,100%);
+  margin:0 auto;
+  padding:40px 42px!important;
+  border-radius:26px!important;
+  display:grid!important;
+  grid-template-columns:minmax(250px,.72fr) minmax(0,1.72fr)!important;
+  gap:54px!important;
+  align-items:start!important;
+}
+#apply .cta-box h2{
+  font-size:clamp(30px,2.45vw,40px)!important;
+  line-height:1.08!important;
+  letter-spacing:-.025em!important;
+  max-width:330px!important;
+  margin:2px 0 0!important;
+}
+#apply .download-note{
+  margin-top:24px!important;
+  padding:8px 12px!important;
+  width:fit-content!important;
+  max-width:285px!important;
+  font-size:13px!important;
+  line-height:1.3!important;
+  border-radius:999px!important;
+}
+#apply .download-note::before{width:18px!important;height:18px!important;font-size:11px!important;}
+#apply .form-grid{
+  width:100%!important;
+  max-width:790px!important;
+  justify-self:end!important;
+  margin-top:0!important;
+  gap:14px 16px!important;
+}
+#apply .field{gap:6px!important;}
+#apply .field label{font-size:13px!important;line-height:1.25!important;}
+#apply .field input{
+  min-height:58px!important;
+  padding:14px 16px!important;
+  border-radius:9px!important;
+  font-size:16px!important;
+}
+#apply .field .btn.primary{
+  min-height:56px!important;
+  padding:14px 20px!important;
+  border-radius:10px!important;
+}
+#apply .consent-note{margin-top:2px!important;font-size:12.5px!important;line-height:1.4!important;}
+#apply .consent-note label{font-weight:500!important;color:#e0ecea!important;gap:9px!important;}
+#apply .consent-note input[type="checkbox"]{width:17px!important;height:17px!important;margin-top:1px!important;}
+@media(max-width:900px){
+  #apply .cta-box{grid-template-columns:1fr!important;gap:28px!important;padding:34px!important;}
+  #apply .cta-box h2{max-width:620px!important;}
+  #apply .form-grid{max-width:none!important;justify-self:stretch!important;}
+}
+@media(max-width:600px){
+  #apply.cta{padding:42px 0!important;}
+  #apply .cta-box{padding:26px 20px!important;border-radius:22px!important;gap:24px!important;}
+  #apply .cta-box h2{font-size:29px!important;}
+  #apply .download-note{margin-top:18px!important;max-width:100%!important;}
+  #apply .field input{min-height:54px!important;}
+}
+</style>
+</body>
+</html>
+<style>
+/* v17: 25–30 format card must remain strictly single-column */
+#formats .card.accent .list{columns:1!important;column-count:1!important;column-gap:0!important;display:block!important}
+#formats .card.accent .list li{display:block!important;width:100%!important;break-inside:auto!important}
+
+/* v18: balance the SberMedAI mark with the other developer logos */
+.partner-sbermed img{height:38px!important;max-width:150px!important}
+@media(max-width:600px){.partner-sbermed img{height:34px!important;max-width:135px!important}}
+
+/* v19 targeted refinements */
+.download-note{display:inline-flex!important;align-items:center;gap:8px;margin-top:16px!important;padding:9px 13px;border:1px solid rgba(255,255,255,.34);border-radius:999px;background:rgba(255,255,255,.10);color:#fff!important;font-size:14px!important;font-weight:750;letter-spacing:.01em}
+.download-note::before{content:"✓";display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--mint);font-size:12px;font-weight:900}
+#formats .campus-accent{padding-top:12px!important;padding-bottom:12px!important}
+#formats .campus-accent strong{font-size:18px;color:var(--mint)}
+@media(max-width:600px){.download-note{border-radius:14px;line-height:1.3}}
+</style>
+<style>
+/* v22 — stronger hierarchy between participation formats */
+#formats .format-featured{
+  background:linear-gradient(180deg,#d7eee8 0%,#eef8f5 100%)!important;
+  border:3px solid var(--mint)!important;
+  box-shadow:0 20px 46px rgba(8,123,115,.19)!important;
+  transform:translateY(-12px) scale(1.015);
+  z-index:2;
+}
+#formats .format-featured .pill{color:var(--mint-dark)!important;font-weight:900!important;}
+#formats .format-featured .team-count{font-size:25px!important;color:var(--mint-dark)!important;}
+#formats .format-featured h3{font-size:26px!important;}
+#formats .format-featured .recommended{padding:7px 12px!important;font-weight:800!important;}
+#formats .format-featured .team-special{background:rgba(255,255,255,.58)!important;}
+#formats .format-featured .campus-accent{background:#c7e5dd!important;}
+
+/* Team 5–20: visibly a team option, but secondary to recommended format */
+#formats .cards3 > article:nth-child(2){
+  background:linear-gradient(180deg,#f2f8f6 0%,#ffffff 72%)!important;
+  border:2px solid #a9cec6!important;
+  box-shadow:0 10px 26px rgba(8,123,115,.075)!important;
+}
+#formats .cards3 > article:nth-child(2) .pill,
+#formats .cards3 > article:nth-child(2) .team-count{
+  color:var(--mint-dark)!important;
+}
+#formats .cards3 > article:nth-child(2) h3{color:#244d4a!important;}
+
+/* Individual stays intentionally neutral */
+#formats .cards3 > article:nth-child(3){
+  background:#fff!important;
+  border:1px solid var(--line)!important;
+  box-shadow:none!important;
+}
+@media(max-width:900px){
+  #formats .format-featured{transform:none!important;}
+}
+</style>
+
+<style>
+/* v25 — premium dark treatment for the recommended team format */
+#formats .format-featured{
+  background:#477f7d!important;
+  border:1px solid #477f7d!important;
+  box-shadow:0 18px 42px rgba(38,84,82,.18)!important;
+  transform:translateY(-6px) scale(1.012)!important;
+  color:#fff!important;
+}
+#formats .format-featured::before{
+  background:#e8f3f0!important;
+  opacity:1!important;
+}
+#formats .format-featured .pill,
+#formats .format-featured .team-count,
+#formats .format-featured h3,
+#formats .format-featured p,
+#formats .format-featured .list li{color:#fff!important;}
+#formats .format-featured .recommended{
+  background:#fff!important;
+  color:#477f7d!important;
+  box-shadow:none!important;
+}
+#formats .format-featured .team-count{
+  background:rgba(255,255,255,.96)!important;
+  color:#315f5d!important;
+  border-color:rgba(255,255,255,.9)!important;
+}
+#formats .format-featured .list li{
+  border-bottom:1px solid rgba(255,255,255,.17)!important;
+}
+#formats .format-featured .list li::before{color:#d8efea!important;}
+#formats .format-featured .team-special,
+#formats .format-featured .venue-highlight{
+  background:transparent!important;
+  margin-left:0!important; margin-right:0!important;
+  padding-left:25px!important;
+  border-radius:0!important;
+}
+#formats .format-featured .team-special::before,
+#formats .format-featured .venue-highlight::before{left:0!important;}
+#formats .format-featured .campus-note{
+  background:transparent!important;
+  color:#d7ece8!important;
+  padding-left:25px!important;
+  border-radius:0!important;
+}
+@media(max-width:900px){#formats .format-featured{transform:none!important;}}
+</style>
+<style>
+/* v26 — recommended format uses the same deep teal family as primary CTAs */
+#formats .format-featured{
+  background:#5f8f91!important;
+  border:1px solid #5f8f91!important;
+  box-shadow:0 16px 34px rgba(61,105,107,.16)!important;
+  transform:translateY(-5px) scale(1.008)!important;
+  color:#fff!important;
+}
+#formats .format-featured::before{background:rgba(255,255,255,.72)!important;height:2px!important;}
+#formats .format-featured .pill,
+#formats .format-featured h3,
+#formats .format-featured p,
+#formats .format-featured .list li{color:#fff!important;}
+#formats .format-featured .recommended{background:#fff!important;color:#4f7f82!important;}
+#formats .format-featured .team-count{
+  background:rgba(255,255,255,.96)!important;
+  color:#315f63!important;
+  border-color:rgba(255,255,255,.9)!important;
+}
+#formats .format-featured .list li{border-bottom:1px solid rgba(255,255,255,.16)!important;}
+#formats .format-featured .list li::before{color:#e3f2f0!important;}
+#formats .format-featured .campus-note{color:#e5f2f1!important;background:transparent!important;}
+@media(max-width:900px){#formats .format-featured{transform:none!important;}}
+</style>
+<style>
+/* v27 — clean final hierarchy for participation formats */
+#formats .cards3{
+  grid-template-columns:1.08fr .98fr .94fr!important;
+  gap:18px!important;
+  align-items:stretch!important;
+}
+#formats .cards3 > article{
+  height:100%!important;
+  transform:none!important;
+  border-radius:22px!important;
+  overflow:hidden!important;
+}
+
+/* 20–30: unmistakably featured, using the primary CTA teal */
+#formats .format-featured{
+  background:#5f8f91!important;
+  border:1px solid #5f8f91!important;
+  box-shadow:0 18px 38px rgba(49,91,93,.20)!important;
+  color:#fff!important;
+  position:relative!important;
+}
+#formats .format-featured::before{content:none!important;display:none!important;}
+#formats .format-featured::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:26px!important;right:26px!important;top:0!important;
+  height:3px!important;
+  background:rgba(255,255,255,.82)!important;
+  border-radius:0 0 3px 3px!important;
+}
+#formats .format-featured .pill,
+#formats .format-featured h3,
+#formats .format-featured p,
+#formats .format-featured .list li,
+#formats .format-featured .shared-benefit{
+  color:#fff!important;
+}
+#formats .format-featured .pill{opacity:.94!important;font-weight:850!important;}
+#formats .format-featured h3{font-size:25px!important;line-height:1.18!important;}
+#formats .format-featured .team-count{
+  display:block!important;
+  background:#fff!important;
+  color:#315f63!important;
+  border:0!important;
+  border-radius:6px!important;
+  padding:10px 12px!important;
+  margin:4px 0 16px!important;
+  font-size:23px!important;
+}
+#formats .format-featured .recommended{
+  background:#fff!important;
+  color:#4f7f82!important;
+  border:0!important;
+  box-shadow:none!important;
+  font-weight:850!important;
+}
+#formats .format-featured .list li{
+  background:transparent!important;
+  border-bottom:1px solid rgba(255,255,255,.18)!important;
+  margin:0!important;
+  padding:11px 0 11px 27px!important;
+  border-radius:0!important;
+}
+#formats .format-featured .list li::before{
+  color:#dff0ed!important;
+  left:0!important;
+}
+#formats .format-featured .venue-highlight,
+#formats .format-featured .team-special{
+  background:transparent!important;
+  margin:0!important;
+  padding:11px 0 11px 27px!important;
+  color:#fff!important;
+  border-radius:0!important;
+}
+#formats .format-featured .venue-highlight::before,
+#formats .format-featured .team-special::before{left:0!important;}
+#formats .format-featured .campus-note{
+  background:transparent!important;
+  color:#e0efed!important;
+  margin:0!important;
+  padding:2px 0 10px 27px!important;
+  border-radius:0!important;
+  font-weight:650!important;
+}
+
+/* 5–20: secondary team option, clearly distinct from individual */
+#formats .cards3 > article:nth-child(2){
+  background:#f2f8f6!important;
+  border:1.5px solid #a8cdc5!important;
+  box-shadow:0 8px 22px rgba(8,123,115,.07)!important;
+}
+#formats .cards3 > article:nth-child(2) .team-count{
+  background:#fff!important;
+  border-color:#aac6c0!important;
+}
+
+/* Individual: quiet baseline */
+#formats .cards3 > article:nth-child(3){
+  background:#fff!important;
+  border:1px solid #d8e5e2!important;
+  box-shadow:none!important;
+}
+
+@media(max-width:900px){
+  #formats .cards3{grid-template-columns:1fr!important;gap:14px!important;}
+  #formats .cards3 > article{transform:none!important;}
+}
+
+/* v32 — requested: ALL text in the featured 20–30 card is white. */
+#formats .format-featured,
+#formats .format-featured *,
+#formats .format-featured .pill,
+#formats .format-featured .recommended,
+#formats .format-featured .team-count,
+#formats .format-featured h3,
+#formats .format-featured p,
+#formats .format-featured p.muted,
+#formats .format-featured .list li,
+#formats .format-featured .list li strong,
+#formats .format-featured .campus-note {
+  color:#fff!important;
+}
+#formats .format-featured .team-count{
+  background:rgba(255,255,255,.10)!important;
+  border:1px solid rgba(255,255,255,.45)!important;
+}
+#formats .format-featured .recommended{
+  color:#fff!important;
+  background:rgba(255,255,255,.16)!important;
+  border:1px solid rgba(255,255,255,.40)!important;
+}
+
+/* v35: compact heading in the final contact form */
+#download h2 { font-size: clamp(25px, 2.5vw, 36px) !important; line-height: 1.12 !important; }
+</style>
